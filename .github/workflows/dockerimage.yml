@@ -22,9 +22,9 @@ jobs:
         # Name of the Docker image
         name: nginx-with-stream
         # Tag for the Docker image
-        # tag: # optional
+        tag: lastest
         # Script body to compute tag name for the Docker image, has context as the main function argument
-        tag script: alpine-$(date +%s)
+        # tag script: alpine
         # Username for Docker registry
         username: marine789
         # Password for Docker registry
