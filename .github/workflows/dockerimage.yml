@@ -14,20 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set date
+      run: date +%s > date
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag marine789/nginx-with-stream:alpine-$(date +%s)
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/nginx-with-stream:latest && docker tag ${{ secrets.DOCKER_USER }}/nginx-with-stream:latest ${{ secrets.DOCKER_USER }}/nginx-with-stream:$(cat date)
+    - name: Docker Login
+      run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
     - name: Docker Publish
-      uses: manusa/actions-publish-docker@v1.0.1
-      with:
-        # Name of the Docker image
-        name: nginx-with-stream
-        # Tag for the Docker image
-        # tag: # optional
-        # Script body to compute tag name for the Docker image, has context as the main function argument
-        tag script: alpine-$(date +%s)
-        # Username for Docker registry
-        username: marine789
-        # Password for Docker registry
-        password: K31thusaD789
-        # Registry URL
-        # registry: # optional
+      run: docker push ${{ secrets.DOCKER_USER }}/nginx-with-stream:latest
+    - name: Docker Publish
+      run: docker push ${{ secrets.DOCKER_USER }}/nginx-with-stream:$(cat date)
