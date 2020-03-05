@@ -4,6 +4,6 @@ FROM nginx:alpine
 
 RUN apk add nginx-mod-stream
 
-COPY config.sh ./config.sh
+COPY . .
 
 RUN config.sh
